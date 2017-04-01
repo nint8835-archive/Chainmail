@@ -1,4 +1,5 @@
 import os
+import re
 import shlex
 import threading
 import jigsaw
@@ -13,28 +14,37 @@ from .Plugin import ChainmailPlugin
 class Wrapper(threading.Thread):
 
     def __init__(self, jar="minecraft_server.jar", max_ram="2G", min_ram="256M", log_level=logging.INFO):
+        super().__init__()
         logging.basicConfig(format="{%(asctime)s} (%(name)s) [%(levelname)s]: %(message)s",
                             datefmt="%x, %X",
                             level=log_level)
         self._logger = logging.getLogger("Chainmail")
         self._server_logger = logging.getLogger("MinecraftServer")
-        self._command = shlex.split(f"java -Xmx{max_ram} -Xms{min_ram} -jar {jar} nogui")
 
-        self.server_data_path = os.path.abspath(os.path.join(__file__, os.pardir, "server"))
+        self.server_data_path = os.path.abspath(os.path.join(__file__, os.pardir, os.pardir, "server"))
         if not os.path.isdir(self.server_data_path):
             self._logger.error("Server data path does not exist, creating now.")
             os.mkdir(self.server_data_path)
             self._logger.info("Server data path created. Please place the minecraft jar in this folder.")
             sys.exit(1)
 
+        os.chdir(self.server_data_path)
+        self._command = shlex.split(f"java -Xmx{max_ram} -Xms{min_ram} -jar {jar} nogui")
+
+        if not os.path.isfile(os.path.join(self.server_data_path, jar)):
+            self._logger.error(f"The specified jar file, {jar}, could not be found in the server directory.")
+            sys.exit(1)
+
         self.plugin_manager = jigsaw.PluginLoader(
-            (os.path.abspath(os.path.join(__file__, os.pardir, "plugins")),),
+            (os.path.abspath(os.path.join(__file__, os.pardir, os.pardir, "plugins")),),
             log_level,
             ChainmailPlugin
         )
 
         self._server_process = None  # type: subprocess.Popen
         self.wrapper_running = False
+
+        self._process_output_regex = re.compile("^\[\d{2}:\d{2}:\d{2}\] \[[\w ]+\/(\w+)\]: ([\S ]+)$")
 
         self._logger.debug("Wrapper initialized.")
 
@@ -45,6 +55,13 @@ class Wrapper(threading.Thread):
                                                 stdin=subprocess.PIPE,
                                                 stderr=subprocess.PIPE)
         self._logger.info("Server started.")
+
+    def process_line(self, line: str):
+        if line == "":
+            return
+        line = line.replace("\r\n", "\n")
+        matches = self._process_output_regex.findall(line.rstrip("\n"))
+        self._server_logger.log(getattr(logging, matches[0][0]), matches[0][1])
 
     def run(self):
         self.wrapper_running = True
@@ -58,4 +75,5 @@ class Wrapper(threading.Thread):
                 self.wrapper_running = False
                 return
 
-            out = self._server_process.stdout.readline()
+            out = self._server_process.stdout.readline().decode("utf-8")
+            self.process_line(out)
