@@ -5,7 +5,7 @@ import os
 import re
 from typing import Dict, Pattern, List, Match
 
-from .Events import Events, ConsoleOutputEvent, VersionDiscoveredEvent
+from .Events import Events, ConsoleOutputEvent, VersionDiscoveredEvent, ServerReadyEvent
 from . import Wrapper
 
 RegexMatches = List[Match[str]]
@@ -67,6 +67,9 @@ class TextProcessor(object):
         self._wrapper.version = matches[0]
         self.load_version(matches[0])
         self._wrapper.EventManager.throw_event(Events.VERSION_DISCOVERED, VersionDiscoveredEvent(matches[0]))
+
+    def server_ready(self, event_type: str, matches: RegexMatches):
+        self._wrapper.EventManager.throw_event(Events.SERVER_READY, ServerReadyEvent())
 
     def process_line(self, line: str):
         line = line.replace("\r\n", "\n").rstrip("\n")

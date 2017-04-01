@@ -6,6 +6,7 @@ class Events(Enum):
     VERSION_DISCOVERED = auto()
     SERVER_STOPPED = auto()
     SERVER_STARTED = auto()
+    SERVER_READY = auto()
 
 
 class Event(object):
@@ -30,4 +31,8 @@ class ServerStoppedEvent(Event):
 
 
 class ServerStartedEvent(Event):
+    pass
+
+
+class ServerReadyEvent(Event):
     pass

@@ -6,5 +6,9 @@
   {
     "type": "version_discovered",
     "regex": "^\\[\\d{2}:\\d{2}:\\d{2}\\] \\[[\\w/ ]+\\]: Starting minecraft server version ([\\S]+)$"
+  },
+  {
+    "type": "server_ready",
+    "regex": "\\[\\d{2}:\\d{2}:\\d{2}\\] \\[[\\w/ ]+\\]: Done \\([\\d.]+s\\)! For help, type \"help\" or \"\\?\""
   }
 ]
