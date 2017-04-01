@@ -8,10 +8,11 @@ from typing import Dict, Pattern, List, Match
 
 RegexMatches = List[Match[str]]
 
+
 class TextProcessor(object):
 
     def __init__(self):
-        self.regexes = {}  # type: Dict[str, Pattern[str]]
+        self.regexes = []  # type: List[Dict[str, Pattern[str]]]
         self._logger = logging.getLogger("TextProcessor")
         self.server_log = logging.getLogger("MinecraftServer")
 
@@ -34,7 +35,10 @@ class TextProcessor(object):
                     data = json.load(f)
 
                     for key in data:
-                        self.regexes[key] = re.compile(data[key])
+                        self.regexes.append({
+                            "key": key,
+                            "regex": re.compile(data[key])
+                        })
                         self._logger.debug(f"Loaded new regex for {key}")
         else:
             self._logger.warning(f"Version {version} not found.")
@@ -60,6 +64,6 @@ class TextProcessor(object):
     def process_line(self, line: str):
         line = line.replace("\r\n", "\n").rstrip("\n")
         print(line)
-        for key in self.regexes:
-            if self.regexes[key].match(line):
-                getattr(self, key, self.unspecified_handler)(key, self.regexes[key].findall(line))
+        for regex in self.regexes:
+            if regex["regex"].match(line):
+                getattr(self, regex["key"], self.unspecified_handler)(regex["key"], regex["regex"].findall(line))
