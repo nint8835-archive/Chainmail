@@ -5,13 +5,16 @@ import os
 import re
 from typing import Dict, Pattern, List, Match
 
+from .Events import Events, ConsoleOutputEvent, VersionDiscoveredEvent
+from . import Wrapper
 
 RegexMatches = List[Match[str]]
 
 
 class TextProcessor(object):
 
-    def __init__(self):
+    def __init__(self, wrapper: "Wrapper.Wrapper"):
+        self._wrapper = wrapper
         self.regexes = []  # type: List[Dict[str, Pattern[str]]]
         self._logger = logging.getLogger("TextProcessor")
         self.server_log = logging.getLogger("MinecraftServer")
@@ -56,10 +59,14 @@ class TextProcessor(object):
 
     def console_output(self, key: str, matches: RegexMatches):
         self.server_log.log(getattr(logging, matches[0][0]), matches[0][1])
+        self._wrapper.EventManager.throw_event(Events.CONSOLE_OUTPUT, ConsoleOutputEvent(matches[0][0],
+                                                                                         matches[0][1]))
 
     def version(self, key: str, matches: RegexMatches):
         self._logger.debug(f"Version detected: {matches[0]}")
+        self._wrapper.version = matches[0]
         self.load_version(matches[0])
+        self._wrapper.EventManager.throw_event(Events.VERSION_DISCOVERED, VersionDiscoveredEvent(matches[0]))
 
     def process_line(self, line: str):
         line = line.replace("\r\n", "\n").rstrip("\n")

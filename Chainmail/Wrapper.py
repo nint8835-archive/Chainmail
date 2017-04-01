@@ -7,6 +7,7 @@ import threading
 
 import jigsaw
 
+from .EventManager import EventManager
 from .Plugin import ChainmailPlugin
 from .TextProcessor import TextProcessor
 
@@ -20,7 +21,8 @@ class Wrapper(threading.Thread):
                             level=log_level)
         self._logger = logging.getLogger("Chainmail")
 
-        self.TextProcessor = TextProcessor()
+        self.TextProcessor = TextProcessor(self)
+        self.EventManager = EventManager()
 
         self.server_data_path = os.path.abspath(os.path.join(__file__, os.pardir, os.pardir, "server"))
         if not os.path.isdir(self.server_data_path):
@@ -44,6 +46,7 @@ class Wrapper(threading.Thread):
 
         self._server_process = None  # type: subprocess.Popen
         self.wrapper_running = False
+        self.version = "UNKNOWN"
 
         self._logger.debug("Wrapper initialized.")
 
