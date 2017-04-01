@@ -4,6 +4,8 @@ from enum import Enum, auto
 class Events(Enum):
     CONSOLE_OUTPUT = auto()
     VERSION_DISCOVERED = auto()
+    SERVER_STOPPED = auto()
+    SERVER_STARTED = auto()
 
 
 class Event(object):
@@ -16,7 +18,16 @@ class ConsoleOutputEvent(Event):
         self.level = level
         self.output = output
 
+
 class VersionDiscoveredEvent(Event):
 
     def __init__(self, version: str):
         self.version = version
+
+
+class ServerStoppedEvent(Event):
+    pass
+
+
+class ServerStartedEvent(Event):
+    pass

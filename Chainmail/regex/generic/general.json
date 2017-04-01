@@ -1,4 +1,10 @@
-{
-  "console_output": "^\\[\\d{2}:\\d{2}:\\d{2}\\] \\[[\\w ]+\\/(\\w+)\\]: ([\\S ]+)$",
-  "version": "^\\[\\d{2}:\\d{2}:\\d{2}\\] \\[[\\w/ ]+\\]: Starting minecraft server version ([\\S]+)$"
-}
+[
+  {
+    "type": "console_output",
+    "regex": "^\\[\\d{2}:\\d{2}:\\d{2}\\] \\[[\\w ]+\\/(\\w+)\\]: ([\\S ]+)$"
+  },
+  {
+    "type": "version_discovered",
+    "regex": "^\\[\\d{2}:\\d{2}:\\d{2}\\] \\[[\\w/ ]+\\]: Starting minecraft server version ([\\S]+)$"
+  }
+]

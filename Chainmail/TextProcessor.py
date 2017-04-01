@@ -37,12 +37,12 @@ class TextProcessor(object):
                 with open(file) as f:
                     data = json.load(f)
 
-                    for key in data:
+                    for item in data:
                         self.regexes.append({
-                            "key": key,
-                            "regex": re.compile(data[key])
+                            "type": item["type"],
+                            "regex": re.compile(item["regex"])
                         })
-                        self._logger.debug(f"Loaded new regex for {key}")
+                        self._logger.debug(f"Loaded new regex for {item['type']}")
         else:
             self._logger.warning(f"Version {version} not found.")
             close = difflib.get_close_matches(version, os.listdir(self._regex_path))
@@ -54,15 +54,15 @@ class TextProcessor(object):
                 return
         self._logger.debug("Regexes loaded.")
 
-    def unspecified_handler(self, key: str, matches: RegexMatches):
-        self._logger.warning(f"No handler specified for {key} (Matches: {', '.join(matches)}")
+    def unspecified_handler(self, event_type: str, matches: RegexMatches):
+        self._logger.warning(f"No handler specified for {event_type} (Matches: {', '.join(matches)}")
 
-    def console_output(self, key: str, matches: RegexMatches):
+    def console_output(self, event_type: str, matches: RegexMatches):
         self.server_log.log(getattr(logging, matches[0][0]), matches[0][1])
         self._wrapper.EventManager.throw_event(Events.CONSOLE_OUTPUT, ConsoleOutputEvent(matches[0][0],
                                                                                          matches[0][1]))
 
-    def version(self, key: str, matches: RegexMatches):
+    def version_discovered(self, event_type: str, matches: RegexMatches):
         self._logger.debug(f"Version detected: {matches[0]}")
         self._wrapper.version = matches[0]
         self.load_version(matches[0])
@@ -73,4 +73,4 @@ class TextProcessor(object):
         print(line)
         for regex in self.regexes:
             if regex["regex"].match(line):
-                getattr(self, regex["key"], self.unspecified_handler)(regex["key"], regex["regex"].findall(line))
+                getattr(self, regex["type"], self.unspecified_handler)(regex["type"], regex["regex"].findall(line))
