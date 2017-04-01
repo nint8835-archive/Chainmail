@@ -5,6 +5,8 @@ import jigsaw
 import logging
 import subprocess
 
+import sys
+
 from .Plugin import ChainmailPlugin
 
 
@@ -17,6 +19,14 @@ class Wrapper(threading.Thread):
         self._logger = logging.getLogger("Chainmail")
         self._server_logger = logging.getLogger("MinecraftServer")
         self._command = shlex.split(f"java -Xmx{max_ram} -Xms{min_ram} -jar {jar} nogui")
+
+        self.server_data_path = os.absdir(os.path.join(__file__, os.pardir, "server"))
+        if not os.path.isdir(self.server_data_path):
+            self._logger.error("Server data path does not exist, creating now.")
+            os.mkdir(self.server_data_path)
+            self._logger.info("Server data path created. Please place the minecraft jar in this folder.")
+            sys.exit(1)
+
         self.plugin_manager = jigsaw.PluginLoader(
             (os.absdir(os.path.join(__file__, os.pardir, "plugins")),),
             log_level,
