@@ -1,0 +1,4 @@
+{
+  "console_output": "^\\[\\d{2}:\\d{2}:\\d{2}\\] \\[[\\w ]+\\/(\\w+)\\]: ([\\S ]+)$",
+  "version": "^\\[\\d{2}:\\d{2}:\\d{2}\\] \\[[\\w/ ]+\\]: Starting minecraft server version ([\\S]+)$"
+}

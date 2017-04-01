@@ -1,14 +1,14 @@
-import os
-import re
-import shlex
-import threading
-import jigsaw
 import logging
+import os
+import shlex
 import subprocess
-
 import sys
+import threading
+
+import jigsaw
 
 from .Plugin import ChainmailPlugin
+from .TextProcessor import TextProcessor
 
 
 class Wrapper(threading.Thread):
@@ -19,7 +19,8 @@ class Wrapper(threading.Thread):
                             datefmt="%x, %X",
                             level=log_level)
         self._logger = logging.getLogger("Chainmail")
-        self._server_logger = logging.getLogger("MinecraftServer")
+
+        self.TextProcessor = TextProcessor()
 
         self.server_data_path = os.path.abspath(os.path.join(__file__, os.pardir, os.pardir, "server"))
         if not os.path.isdir(self.server_data_path):
@@ -44,8 +45,6 @@ class Wrapper(threading.Thread):
         self._server_process = None  # type: subprocess.Popen
         self.wrapper_running = False
 
-        self._process_output_regex = re.compile("^\[\d{2}:\d{2}:\d{2}\] \[[\w ]+\/(\w+)\]: ([\S ]+)$")
-
         self._logger.debug("Wrapper initialized.")
 
     def start_server(self):
@@ -55,13 +54,6 @@ class Wrapper(threading.Thread):
                                                 stdin=subprocess.PIPE,
                                                 stderr=subprocess.PIPE)
         self._logger.info("Server started.")
-
-    def process_line(self, line: str):
-        if line == "":
-            return
-        line = line.replace("\r\n", "\n")
-        matches = self._process_output_regex.findall(line.rstrip("\n"))
-        self._server_logger.log(getattr(logging, matches[0][0]), matches[0][1])
 
     def run(self):
         self.wrapper_running = True
@@ -76,4 +68,4 @@ class Wrapper(threading.Thread):
                 return
 
             out = self._server_process.stdout.readline().decode("utf-8")
-            self.process_line(out)
+            self.TextProcessor.process_line(out)
