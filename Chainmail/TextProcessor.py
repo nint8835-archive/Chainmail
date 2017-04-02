@@ -79,6 +79,10 @@ class TextProcessor(object):
         self._wrapper.PlayerManager.add_player(matches[0])
         self._wrapper.EventManager.dispatch_event(Events.PLAYER_CONNECTED, PlayerConnectedEvent(matches[0]))
 
+    def player_disconnected(self, event_type: str, matches: RegexMatches):
+        self._wrapper.PlayerManager.set_player_disconnected(matches[0])
+        self._wrapper.EventManager.dispatch_event(Events.PLAYER_DISCONNECTED, PlayerDisconnectedEvent(matches[0]))
+
     def process_line(self, line: str):
         line = line.replace("\r\n", "\n").rstrip("\n")
         print(line)

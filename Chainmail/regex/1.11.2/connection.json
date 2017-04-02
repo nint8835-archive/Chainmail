@@ -6,5 +6,9 @@
   {
     "type": "player_connected",
     "regex": "^\\[\\d{2}:\\d{2}:\\d{2}\\] \\[[\\S/ ]+\\]: ([\\w\\d_]+) joined the game$"
+  },
+  {
+    "type": "player_disconnected",
+    "regex": "^\\[\\d{2}:\\d{2}:\\d{2}\\] \\[[\\S/ ]+\\]: ([\\w\\d_]+) left the game$"
   }
 ]
