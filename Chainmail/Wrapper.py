@@ -47,6 +47,10 @@ class Wrapper(threading.Thread):
             ChainmailPlugin
         )
 
+        self._logger.debug("Loading manifests...")
+        self.plugin_manager.load_manifests()
+        self._logger.debug("Manifests loaded.")
+
         self._logger.debug("Loading plugins...")
         self.plugin_manager.load_plugins(self)
         self._logger.debug("Plugins loaded.")
@@ -67,7 +71,8 @@ class Wrapper(threading.Thread):
         self._logger.info("Server started.")
 
     def write_line(self, line: str):
-        self._server_process.stdin.write(f"{line}\n")
+        self._server_process.stdin.write(f"{line}\n".encode(sys.stdin.encoding))
+        self._server_process.stdin.flush()
 
     def run(self):
         self.wrapper_running = True
