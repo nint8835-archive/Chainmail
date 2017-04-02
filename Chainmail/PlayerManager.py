@@ -1,11 +1,13 @@
 from typing import Dict
 
 from .Player import Player
+from . import Wrapper
 
 
 class PlayerManager(object):
 
-    def __init__(self):
+    def __init__(self, wrapper: "Wrapper.Wrapper"):
+        self._wrapper = wrapper
         self._uuids = {}  # type: Dict[str, str]
         self._players = []  # type: List[Player]
 
@@ -26,6 +28,9 @@ class PlayerManager(object):
     def add_player(self, username: str):
         if self.get_player(username) is None:
             self._players.append(Player(username, self.get_uuid(username)))
+            for op in self._wrapper.ops:
+                if op == self.get_uuid(username):
+                    self.get_player(username).is_op = True
 
     def set_player_disconnected(self, username: str):
         user = self.get_player(username)

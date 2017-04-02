@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import shlex
@@ -25,7 +26,7 @@ class Wrapper(threading.Thread):
 
         self.TextProcessor = TextProcessor(self)
         self.EventManager = EventManager()
-        self.PlayerManager = PlayerManager()
+        self.PlayerManager = PlayerManager(self)
 
         self.server_data_path = os.path.abspath(os.path.join(__file__, os.pardir, os.pardir, "server"))
         if not os.path.isdir(self.server_data_path):
@@ -40,6 +41,14 @@ class Wrapper(threading.Thread):
         if not os.path.isfile(os.path.join(self.server_data_path, jar)):
             self._logger.error(f"The specified jar file, {jar}, could not be found in the server directory.")
             sys.exit(1)
+
+        self._logger.debug("Loading OPs...")
+        self.ops = []
+        with open(os.path.join(self.server_data_path, "ops.json")) as f:
+            ops = json.load(f)
+            for op in ops:
+                self.ops.append(op["uuid"])
+        self._logger.debug("OPs loaded")
 
         self.plugin_manager = jigsaw.PluginLoader(
             (os.path.abspath(os.path.join(__file__, os.pardir, os.pardir, "plugins")),),

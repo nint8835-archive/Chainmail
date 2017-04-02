@@ -11,6 +11,7 @@ class Events(Enum):
     PLAYER_CONNECTED = auto()
     PLAYER_DISCONNECTED = auto()
     MESSAGE_SENT = auto()
+    USER_OPPED = auto()
 
 
 class Event(object):
@@ -66,3 +67,9 @@ class MessageSentEvent(Event):
     def __init__(self, username: str, message: str):
         self.username = username
         self.message = message
+
+
+class UserOppedEvent(Event):
+
+    def __init__(self, username: str):
+        self.username = username

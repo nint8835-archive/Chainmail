@@ -12,3 +12,6 @@ class TestPlugin(ChainmailPlugin):
         if event.message == "!op":
             self.wrapper.write_line(f"op {event.username}")
             self.logger.info(f"Gave op status to {event.username}!")
+        elif event.message == "!deop":
+            self.wrapper.write_line(f"deop {event.username}")
+            self.logger.info(f"Took away op status from {event.username}")

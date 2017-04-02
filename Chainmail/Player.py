@@ -4,3 +4,4 @@ class Player(object):
         self.name = name
         self.uuid = uuid
         self.connected = False
+        self.is_op = False
