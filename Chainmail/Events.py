@@ -1,5 +1,7 @@
 from enum import Enum, auto
 
+from .Player import Player
+
 
 class Events(Enum):
     CONSOLE_OUTPUT = auto()
@@ -53,30 +55,35 @@ class UUIDDiscoveredEvent(Event):
 
 class PlayerConnectedEvent(Event):
 
-    def __init__(self, username: str):
+    def __init__(self, username: str, player: Player):
         self.username = username
+        self.player = player
 
 
 class PlayerDisconnectedEvent(Event):
 
-    def __init__(self, username: str):
+    def __init__(self, username: str, player: Player):
         self.username = username
+        self.player = player
 
 
 class MessageSentEvent(Event):
 
-    def __init__(self, username: str, message: str):
+    def __init__(self, username: str, message: str, player: Player):
         self.username = username
         self.message = message
+        self.player = player
 
 
 class UserOppedEvent(Event):
 
-    def __init__(self, username: str):
+    def __init__(self, username: str, player: Player):
         self.username = username
+        self.player = player
 
 
 class UserDeoppedEvent(Event):
 
-    def __init__(self, username: str):
+    def __init__(self, username: str, player: Player):
         self.username = username
+        self.player = player

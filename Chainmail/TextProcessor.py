@@ -77,24 +77,24 @@ class TextProcessor(object):
 
     def player_connected(self, event_type: str, matches: RegexMatches):
         self._wrapper.PlayerManager.add_player(matches[0])
-        self._wrapper.EventManager.dispatch_event(Events.PLAYER_CONNECTED, PlayerConnectedEvent(matches[0]))
+        self._wrapper.EventManager.dispatch_event(Events.PLAYER_CONNECTED, PlayerConnectedEvent(matches[0], self._wrapper.PlayerManager.get_player(matches[0])))
 
     def player_disconnected(self, event_type: str, matches: RegexMatches):
         self._wrapper.PlayerManager.set_player_disconnected(matches[0])
-        self._wrapper.EventManager.dispatch_event(Events.PLAYER_DISCONNECTED, PlayerDisconnectedEvent(matches[0]))
+        self._wrapper.EventManager.dispatch_event(Events.PLAYER_DISCONNECTED, PlayerDisconnectedEvent(matches[0], self._wrapper.PlayerManager.get_player(matches[0])))
 
     def message_sent(self, event_type: str, matches: RegexMatches):
-        self._wrapper.EventManager.dispatch_event(Events.MESSAGE_SENT, MessageSentEvent(matches[0][0], matches[0][1]))
+        self._wrapper.EventManager.dispatch_event(Events.MESSAGE_SENT, MessageSentEvent(matches[0][0], matches[0][1], self._wrapper.PlayerManager.get_player(matches[0][0])))
 
     def user_opped(self, event_type: str, matches: RegexMatches):
         self._wrapper.PlayerManager.get_player(matches[0]).is_op = True
         self._wrapper.ops.append(self._wrapper.PlayerManager.get_uuid(matches[0]))
-        self._wrapper.EventManager.dispatch_event(Events.USER_OPPED, UserOppedEvent(matches[0]))
+        self._wrapper.EventManager.dispatch_event(Events.USER_OPPED, UserOppedEvent(matches[0], self._wrapper.PlayerManager.get_player(matches[0])))
 
     def user_deopped(self, event_type: str, matches: RegexMatches):
         self._wrapper.PlayerManager.get_player(matches[0]).is_op = False
         self._wrapper.ops.remove(self._wrapper.PlayerManager.get_uuid(matches[0]))
-        self._wrapper.EventManager.dispatch_event(Events.USER_DEOPPED, UserDeoppedEvent(matches[0]))
+        self._wrapper.EventManager.dispatch_event(Events.USER_DEOPPED, UserDeoppedEvent(matches[0], self._wrapper.PlayerManager.get_player(matches[0])))
 
     def process_line(self, line: str):
         line = line.replace("\r\n", "\n").rstrip("\n")
