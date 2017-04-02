@@ -5,7 +5,7 @@ import os
 import re
 from typing import Dict, Pattern, List, Match
 
-from .Events import Events, ConsoleOutputEvent, VersionDiscoveredEvent, ServerReadyEvent, UUIDDiscoveredEvent
+from .Events import *
 from . import Wrapper
 
 RegexMatches = List[Match[str]]
@@ -74,6 +74,10 @@ class TextProcessor(object):
     def uuid_found(self, event_type: str, matches: RegexMatches):
         self._wrapper.PlayerManager.set_uuid(matches[0][0], matches[0][1])
         self._wrapper.EventManager.dispatch_event(Events.UUID_DISCOVERED, UUIDDiscoveredEvent(matches[0][0], matches[0][1]))
+
+    def player_connected(self, event_type: str, matches: RegexMatches):
+        self._wrapper.PlayerManager.add_player(matches[0])
+        self._wrapper.EventManager.dispatch_event(Events.PLAYER_CONNECTED, PlayerConnectedEvent(matches[0]))
 
     def process_line(self, line: str):
         line = line.replace("\r\n", "\n").rstrip("\n")

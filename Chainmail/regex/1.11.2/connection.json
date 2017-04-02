@@ -2,5 +2,9 @@
   {
     "type": "uuid_found",
     "regex": "^\\[\\d{2}:\\d{2}:\\d{2}\\] \\[[\\S/ ]+\\]: UUID of player ([\\w\\d_]+) is ([a-f0-9\\-]+)$"
+  },
+  {
+    "type": "player_connected",
+    "regex": "^\\[\\d{2}:\\d{2}:\\d{2}\\] \\[[\\S/ ]+\\]: ([\\w\\d_]+) joined the game$"
   }
 ]
