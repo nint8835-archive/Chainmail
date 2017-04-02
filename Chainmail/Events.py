@@ -10,6 +10,7 @@ class Events(Enum):
     UUID_DISCOVERED = auto()
     PLAYER_CONNECTED = auto()
     PLAYER_DISCONNECTED = auto()
+    MESSAGE_SENT = auto()
 
 
 class Event(object):
@@ -58,3 +59,10 @@ class PlayerDisconnectedEvent(Event):
 
     def __init__(self, username: str):
         self.username = username
+
+
+class MessageSentEvent(Event):
+
+    def __init__(self, username: str, message: str):
+        self.username = username
+        self.message = message
