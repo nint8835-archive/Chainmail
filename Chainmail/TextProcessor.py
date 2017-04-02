@@ -91,6 +91,11 @@ class TextProcessor(object):
         self._wrapper.ops.append(self._wrapper.PlayerManager.get_uuid(matches[0]))
         self._wrapper.EventManager.dispatch_event(Events.USER_OPPED, UserOppedEvent(matches[0]))
 
+    def user_deopped(self, event_type: str, matches: RegexMatches):
+        self._wrapper.PlayerManager.get_player(matches[0]).is_op = False
+        self._wrapper.ops.remove(self._wrapper.PlayerManager.get_uuid(matches[0]))
+        self._wrapper.EventManager.dispatch_event(Events.USER_DEOPPED, UserDeoppedEvent(matches[0]))
+
     def process_line(self, line: str):
         line = line.replace("\r\n", "\n").rstrip("\n")
         print(line)
