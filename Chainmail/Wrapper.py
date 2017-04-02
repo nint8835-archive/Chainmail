@@ -66,6 +66,9 @@ class Wrapper(threading.Thread):
         self.EventManager.dispatch_event(Events.SERVER_STARTED, ServerStartedEvent())
         self._logger.info("Server started.")
 
+    def write_line(self, line: str):
+        self._server_process.stdin.write(f"{line}\n")
+
     def run(self):
         self.wrapper_running = True
 
