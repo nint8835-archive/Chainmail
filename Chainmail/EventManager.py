@@ -18,7 +18,7 @@ class EventManager(object):
             "handler": handler
         })
 
-    def throw_event(self, event_type: Events, args: Event):
+    def dispatch_event(self, event_type: Events, args: Event):
         self._logger.debug(f"Event thrown: {event_type.name}")
         for handler in self._handlers:
             if handler["type"] == event_type:

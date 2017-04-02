@@ -7,6 +7,7 @@ class Events(Enum):
     SERVER_STOPPED = auto()
     SERVER_STARTED = auto()
     SERVER_READY = auto()
+    UUID_DISCOVERED = auto()
 
 
 class Event(object):
@@ -36,3 +37,10 @@ class ServerStartedEvent(Event):
 
 class ServerReadyEvent(Event):
     pass
+
+
+class UUIDDiscoveredEvent(Event):
+
+    def __init__(self, username: str, uuid: str):
+        self.username = username
+        self.uuid = uuid

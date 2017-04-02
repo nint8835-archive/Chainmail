@@ -9,6 +9,7 @@ import jigsaw
 
 from .Events import ServerStartedEvent, Events, ServerStoppedEvent
 from .EventManager import EventManager
+from .PlayerManager import PlayerManager
 from .Plugin import ChainmailPlugin
 from .TextProcessor import TextProcessor
 
@@ -24,6 +25,7 @@ class Wrapper(threading.Thread):
 
         self.TextProcessor = TextProcessor(self)
         self.EventManager = EventManager()
+        self.PlayerManager = PlayerManager()
 
         self.server_data_path = os.path.abspath(os.path.join(__file__, os.pardir, os.pardir, "server"))
         if not os.path.isdir(self.server_data_path):
@@ -57,7 +59,7 @@ class Wrapper(threading.Thread):
                                                 stdout=subprocess.PIPE,
                                                 stdin=subprocess.PIPE,
                                                 stderr=subprocess.PIPE)
-        self.EventManager.throw_event(Events.SERVER_STARTED, ServerStartedEvent())
+        self.EventManager.dispatch_event(Events.SERVER_STARTED, ServerStartedEvent())
         self._logger.info("Server started.")
 
     def run(self):
@@ -69,7 +71,7 @@ class Wrapper(threading.Thread):
             return_code = self._server_process.poll()
             if return_code is not None:
                 self._logger.info("Server no longer running.")
-                self.EventManager.throw_event(Events.SERVER_STOPPED, ServerStoppedEvent())
+                self.EventManager.dispatch_event(Events.SERVER_STOPPED, ServerStoppedEvent())
                 self.wrapper_running = False
                 return
 
