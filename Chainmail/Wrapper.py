@@ -47,6 +47,10 @@ class Wrapper(threading.Thread):
             ChainmailPlugin
         )
 
+        self._logger.debug("Loading plugins...")
+        self.plugin_manager.load_plugins(self)
+        self._logger.debug("Plugins loaded.")
+
         self._server_process = None  # type: subprocess.Popen
         self.wrapper_running = False
         self.version = "UNKNOWN"
