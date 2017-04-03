@@ -26,7 +26,7 @@ class TestPlugin(ChainmailPlugin):
         elif event.message.startswith("!eval"):
             args = event.message.split(" ")
             if len(args) == 1:
-                self.eval_usage_message.send(event.username)
+                event.player.send_message(self.eval_usage_message)
             else:
                 code = " ".join(args[1:])
 

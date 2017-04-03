@@ -1,3 +1,6 @@
+from .MessageBuilder import MessageBuilder
+
+
 class Player(object):
 
     def __init__(self, name: str, uuid: str):
@@ -5,3 +8,6 @@ class Player(object):
         self.uuid = uuid
         self.connected = False
         self.is_op = False
+
+    def send_message(self, builder: MessageBuilder):
+        builder.send(self.name)
