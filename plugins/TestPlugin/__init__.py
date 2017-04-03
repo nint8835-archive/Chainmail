@@ -22,7 +22,6 @@ class TestPlugin(ChainmailPlugin):
         elif event.message == "!deop":
             self.wrapper.write_line(f"deop {event.username}")
             self.logger.info(f"Took away op status from {event.username}")
-
         elif event.message.startswith("!eval"):
             args = event.message.split(" ")
             if len(args) == 1:
@@ -36,4 +35,3 @@ class TestPlugin(ChainmailPlugin):
                     result = traceback.format_exc(1)
 
                 self.wrapper.write_line(f"say Result: {result}")
-

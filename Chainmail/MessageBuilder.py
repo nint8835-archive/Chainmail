@@ -29,7 +29,7 @@ class MessageBuilder(object):
         self.wrapper = wrapper
         self.fields = []
 
-    def add_field(self, text: str, colour: Colours=Colours.white, bold: bool=False, italic: bool=False, underlined: bool=False, strikethrough: bool=False, obfuscated: bool = False):
+    def add_field(self, text: str, colour: Colours=Colours.white, bold: bool=False, italic: bool=False, underlined: bool=False, strikethrough: bool=False, obfuscated: bool = False, **kwargs):
         self.fields.append({
             "text": text,
             "color": colour.value,
@@ -37,7 +37,8 @@ class MessageBuilder(object):
             "italic": italic,
             "underlined": underlined,
             "strikethrough": strikethrough,
-            "obfuscated": obfuscated
+            "obfuscated": obfuscated,
+            **kwargs
         })
 
     def send(self, destination: str):
