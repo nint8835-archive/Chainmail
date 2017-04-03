@@ -36,7 +36,7 @@ class MessageBuilder(object):
         self.wrapper = wrapper
         self.fields = []
 
-    def add_field(self, text: str, colour: Colours=Colours.white, bold: bool=False, italic: bool=False, underlined: bool=False, strikethrough: bool=False, obfuscated: bool = False, hover_event: HoverEvent = HoverEvent(),  **kwargs):
+    def add_field(self, text: str, colour: Colours=Colours.white, bold: bool=False, italic: bool=False, underlined: bool=False, strikethrough: bool=False, obfuscated: bool=False, hover_event: HoverEvent=HoverEvent(), insertion: str="",  **kwargs):
         self.fields.append({
             "text": text,
             "color": colour.value,
@@ -46,6 +46,7 @@ class MessageBuilder(object):
             "strikethrough": strikethrough,
             "obfuscated": obfuscated,
             "hoverEvent": hover_event.to_dict(),
+            "insertion": insertion,
             **kwargs
         })
 
@@ -58,7 +59,7 @@ class TextHoverEvent(HoverEvent):
     def __init__(self, wrapper: "Wrapper.Wrapper"):
         self.builder = MessageBuilder(wrapper)
 
-    def add_field(self, text: str, colour: Colours=Colours.white, bold: bool=False, italic: bool=False, underlined: bool=False, strikethrough: bool=False, obfuscated: bool = False):
+    def add_field(self, text: str, colour: Colours=Colours.white, bold: bool=False, italic: bool=False, underlined: bool=False, strikethrough: bool=False, obfuscated: bool=False):
         self.builder.add_field(text=text,
                                colour=colour,
                                bold=bold,

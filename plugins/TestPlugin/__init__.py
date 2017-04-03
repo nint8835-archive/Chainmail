@@ -42,3 +42,8 @@ class TestPlugin(ChainmailPlugin):
             hover.add_field("I'm hovering text!", Colours.blue)
             builder.add_field("Hover over me!", Colours.gold, hover_event=hover)
             event.player.send_message(builder)
+
+        elif event.message == "!insertiontest":
+            builder = MessageBuilder(self.wrapper)
+            builder.add_field("Shift-click me!", Colours.gold, insertion="The power of insertions!")
+            event.player.send_message(builder)
