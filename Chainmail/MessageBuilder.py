@@ -23,13 +23,20 @@ class Colours(Enum):
     white = "white"
 
 
+class HoverEvent(object):
+
+    # noinspection PyMethodMayBeStatic
+    def to_dict(self) -> dict:
+        return {}
+
+
 class MessageBuilder(object):
 
     def __init__(self, wrapper: "Wrapper.Wrapper"):
         self.wrapper = wrapper
         self.fields = []
 
-    def add_field(self, text: str, colour: Colours=Colours.white, bold: bool=False, italic: bool=False, underlined: bool=False, strikethrough: bool=False, obfuscated: bool = False, **kwargs):
+    def add_field(self, text: str, colour: Colours=Colours.white, bold: bool=False, italic: bool=False, underlined: bool=False, strikethrough: bool=False, obfuscated: bool = False, hover_event: HoverEvent = HoverEvent(),  **kwargs):
         self.fields.append({
             "text": text,
             "color": colour.value,
@@ -38,8 +45,31 @@ class MessageBuilder(object):
             "underlined": underlined,
             "strikethrough": strikethrough,
             "obfuscated": obfuscated,
+            "hoverEvent": hover_event.to_dict(),
             **kwargs
         })
 
     def send(self, destination: str):
         self.wrapper.write_line(f"tellraw {destination} {json.dumps(self.fields)}")
+
+
+class TextHoverEvent(HoverEvent):
+
+    def __init__(self, wrapper: "Wrapper.Wrapper"):
+        self.builder = MessageBuilder(wrapper)
+
+    def add_field(self, text: str, colour: Colours=Colours.white, bold: bool=False, italic: bool=False, underlined: bool=False, strikethrough: bool=False, obfuscated: bool = False):
+        self.builder.add_field(text=text,
+                               colour=colour,
+                               bold=bold,
+                               italic=italic,
+                               underlined=underlined,
+                               strikethrough=strikethrough,
+                               obfuscated=obfuscated)
+
+    def to_dict(self) -> dict:
+        return {
+            "action": "show_text",
+            "value": {"text": "",
+                      "extra": [self.builder.fields]}
+        }

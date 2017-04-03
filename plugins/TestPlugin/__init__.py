@@ -1,7 +1,7 @@
 import traceback
 
 from Chainmail.Events import MessageSentEvent, Events
-from Chainmail.MessageBuilder import MessageBuilder, Colours
+from Chainmail.MessageBuilder import MessageBuilder, Colours, TextHoverEvent
 from Chainmail.Plugin import ChainmailPlugin
 
 
@@ -35,3 +35,10 @@ class TestPlugin(ChainmailPlugin):
                     result = traceback.format_exc(1)
 
                 self.wrapper.write_line(f"say Result: {result}")
+
+        elif event.message == "!hovertest":
+            builder = MessageBuilder(self.wrapper)
+            hover = TextHoverEvent(self.wrapper)
+            hover.add_field("I'm hovering text!", Colours.blue)
+            builder.add_field("Hover over me!", Colours.gold, hover_event=hover)
+            event.player.send_message(builder)
