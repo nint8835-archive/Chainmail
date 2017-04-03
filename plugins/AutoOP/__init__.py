@@ -14,5 +14,5 @@ class AutoOP(ChainmailPlugin):
             self.logger.info(f"Server has no ops registered. Opping {event.username}.")
             event.player.op()
             message = MessageBuilder(self.wrapper)
-            message.add_field("You have been granted op status for being the first player.", Colours.red)
+            message.add_field("You have been granted op status for being the first player.", Colours.gold)
             event.player.send_message(message)
