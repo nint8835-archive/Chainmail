@@ -21,13 +21,13 @@ class PlayerManager(object):
 
     def get_player(self, username: str) -> Player:
         for player in self._players:
-            if player.name == username:
+            if player.username == username:
                 return player
         return None
 
     def add_player(self, username: str):
         if self.get_player(username) is None:
-            self._players.append(Player(username, self.get_uuid(username)))
+            self._players.append(Player(username, self.get_uuid(username), self._wrapper))
             for op in self._wrapper.ops:
                 if op == self.get_uuid(username):
                     self.get_player(username).is_op = True
