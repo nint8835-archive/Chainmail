@@ -1,5 +1,6 @@
 import json
 from enum import Enum
+from typing import List
 
 from . import Wrapper
 
@@ -52,6 +53,10 @@ class MessageBuilder(object):
 
     def send(self, destination: str):
         self.wrapper.write_line(f"tellraw {destination} {json.dumps(self.fields)}")
+
+    def send_to_group(self, group: List[str]):
+        for username in group:
+            self.send(username)
 
 
 class TextHoverEvent(HoverEvent):
