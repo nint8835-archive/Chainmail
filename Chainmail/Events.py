@@ -1,5 +1,7 @@
 from enum import Enum, auto
 
+from typing import Match, List
+
 from .Player import Player
 
 
@@ -15,6 +17,7 @@ class Events(Enum):
     MESSAGE_SENT = auto()
     USER_OPPED = auto()
     USER_DEOPPED = auto()
+    COMMAND_SENT = auto()
 
 
 class Event(object):
@@ -73,6 +76,13 @@ class MessageSentEvent(Event):
         self.username = username
         self.message = message
         self.player = player
+
+
+class CommandSentEvent(MessageSentEvent):
+
+    def __init__(self, username: str, message: str, player: Player, args: List[Match[str]]):
+        super().__init__(username, message, player)
+        self.args = args
 
 
 class UserOppedEvent(Event):

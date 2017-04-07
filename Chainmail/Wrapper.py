@@ -8,6 +8,7 @@ import threading
 
 import jigsaw
 
+from .CommandRegistry import CommandRegistry
 from .Events import ServerStartedEvent, Events, ServerStoppedEvent
 from .EventManager import EventManager
 from .PlayerManager import PlayerManager
@@ -26,6 +27,7 @@ class Wrapper(threading.Thread):
 
         self.TextProcessor = TextProcessor(self)
         self.EventManager = EventManager()
+        self.CommandRegistry = CommandRegistry()
         self.PlayerManager = PlayerManager(self)
 
         self.server_data_path = os.path.abspath(os.path.join(__file__, os.pardir, os.pardir, "server"))
