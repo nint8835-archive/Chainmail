@@ -46,10 +46,11 @@ class Wrapper(threading.Thread):
 
         self._logger.debug("Loading OPs...")
         self.ops = []
-        with open(os.path.join(self.server_data_path, "ops.json")) as f:
-            ops = json.load(f)
-            for op in ops:
-                self.ops.append(op["uuid"])
+        if os.path.isfile(os.path.join(self.server_data_path, "ops.json")):
+            with open(os.path.join(self.server_data_path, "ops.json")) as f:
+                ops = json.load(f)
+                for op in ops:
+                    self.ops.append(op["uuid"])
         self._logger.debug("OPs loaded")
 
         self.plugin_manager = jigsaw.PluginLoader(
