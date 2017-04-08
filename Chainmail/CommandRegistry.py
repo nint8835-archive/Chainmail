@@ -30,6 +30,9 @@ class CommandRegistry(object):
     def __init__(self):
         self._commands = []  # type: List[Command]
 
+    def get_accessible_commands(self, player: Player) -> List[Command]:
+        return [i for i in self._commands if i.can_run_command(player)]
+
     def register_command(self, name: str, regex: str, description: str, handler: classmethod, requires_op: bool = False) -> Command:
         command = Command(name, regex, description, handler, requires_op)
         self._commands.append(command)
