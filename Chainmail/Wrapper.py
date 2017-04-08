@@ -101,3 +101,9 @@ class Wrapper(threading.Thread):
 
             out = self._server_process.stdout.readline().decode("utf-8")
             self.TextProcessor.process_line(out)
+
+    def reload(self):
+        self.CommandRegistry.clear_commands()
+        self.EventManager.clear_handlers()
+        self.plugin_manager.reload_all_manifests()
+        self.plugin_manager.reload_all_plugins(self)

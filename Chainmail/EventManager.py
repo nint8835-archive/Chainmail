@@ -23,3 +23,6 @@ class EventManager(object):
         for handler in self._handlers:
             if handler["type"] == event_type:
                 threading.Thread(target=handler["handler"], args=(args,)).start()
+
+    def clear_handlers(self):
+        self._handlers = []

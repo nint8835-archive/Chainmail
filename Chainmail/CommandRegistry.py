@@ -43,5 +43,6 @@ class CommandRegistry(object):
             if command.matches(event) and command.can_run_command(event.player):
                 command(event)
 
-
+    def clear_commands(self):
+        self._commands = []
 
