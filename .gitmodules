@@ -1,0 +1,3 @@
+[submodule "plugins/ChainmailEssentials"]
+	path = plugins/ChainmailEssentials
+	url = https://github.com/Chainmail-Project/ChainmailEssentials.git
