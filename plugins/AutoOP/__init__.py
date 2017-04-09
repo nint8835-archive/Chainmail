@@ -8,9 +8,9 @@ class AutoOP(ChainmailPlugin):
         super().__init__(manifest, wrapper)
 
         self.wrapper.EventManager.register_handler(Events.PLAYER_CONNECTED, self.handle_player_connected)
-        hover = TextHoverEvent(self.wrapper)
+        hover = TextHoverEvent()
         hover.add_field("Since Chainmail does not have a method to interact with the console at the moment, the server will auto-op the first player that joins.")
-        self.opped_message = MessageBuilder(self.wrapper)
+        self.opped_message = MessageBuilder()
         self.opped_message.add_field("You have been granted op status.", Colours.gold)
         self.opped_message.add_field(" [INFO]", Colours.blue, bold=True, hover_event=hover)
 

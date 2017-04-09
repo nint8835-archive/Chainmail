@@ -2,7 +2,7 @@ import json
 from enum import Enum
 from typing import List
 
-from . import Wrapper
+from . import Wrapper, Player
 
 
 class Colours(Enum):
@@ -33,8 +33,7 @@ class HoverEvent(object):
 
 class MessageBuilder(object):
 
-    def __init__(self, wrapper: "Wrapper.Wrapper"):
-        self.wrapper = wrapper
+    def __init__(self):
         self.fields = []
 
     def add_field(self, text: str, colour: Colours=Colours.white, bold: bool=False, italic: bool=False, underlined: bool=False, strikethrough: bool=False, obfuscated: bool=False, hover_event: HoverEvent=HoverEvent(), insertion: str="",  **kwargs):
@@ -51,18 +50,21 @@ class MessageBuilder(object):
             **kwargs
         })
 
-    def send(self, destination: str):
-        self.wrapper.write_line(f"tellraw {destination} {json.dumps(self.fields)}")
+    def send(self, destination: "Player.Player"):
+        destination.send_message(self)
 
-    def send_to_group(self, group: List[str]):
-        for username in group:
-            self.send(username)
+    def generate_command(self, player: "Player.Player") -> str:
+        return f"tellraw {player.username} {json.dumps(self.fields)}"
+
+    def send_to_group(self, group: List["Player.Player"]):
+        for player in group:
+            player.send_message(self)
 
 
 class TextHoverEvent(HoverEvent):
 
-    def __init__(self, wrapper: "Wrapper.Wrapper"):
-        self.builder = MessageBuilder(wrapper)
+    def __init__(self):
+        self.builder = MessageBuilder()
 
     def add_field(self, text: str, colour: Colours=Colours.white, bold: bool=False, italic: bool=False, underlined: bool=False, strikethrough: bool=False, obfuscated: bool=False):
         self.builder.add_field(text=text,

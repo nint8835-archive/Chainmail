@@ -12,7 +12,7 @@ class Player(object):
         self.is_op = False
 
     def send_message(self, builder: MessageBuilder):
-        builder.send(self.username)
+        self.wrapper.write_line(builder.generate_command(self))
 
     def op(self):
         self.wrapper.write_line(f"op {self.username}")
