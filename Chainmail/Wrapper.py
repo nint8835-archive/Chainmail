@@ -19,6 +19,13 @@ from .TextProcessor import TextProcessor
 class Wrapper(threading.Thread):
 
     def __init__(self, jar="minecraft_server.jar", max_ram="2G", min_ram="256M", log_level=logging.INFO):
+        """
+        Initializes the wrapper
+        :param jar: The name of the minecraft server jar file
+        :param max_ram: The maximum ram for the java vm
+        :param min_ram: The minimum ram for the java vm
+        :param log_level: The log lever for all internal loggers
+        """
         super().__init__()
         logging.basicConfig(format="{%(asctime)s} (%(name)s) [%(levelname)s]: %(message)s",
                             datefmt="%x, %X",
@@ -74,6 +81,9 @@ class Wrapper(threading.Thread):
         self._logger.debug("Wrapper initialized.")
 
     def start_server(self):
+        """
+        Starts the server
+        """
         self._logger.info("Starting server...")
         self._server_process = subprocess.Popen(self._command,
                                                 stdout=subprocess.PIPE,
@@ -83,10 +93,17 @@ class Wrapper(threading.Thread):
         self._logger.info("Server started.")
 
     def write_line(self, line: str):
+        """
+        Writes a line to the server's console input
+        :param line: 
+        """
         self._server_process.stdin.write(f"{line}\n".encode(sys.stdin.encoding))
         self._server_process.stdin.flush()
 
-    def run(self):
+    def run(self) -> None:
+        """
+        Handles the running of the server
+        """
         self.wrapper_running = True
 
         self.start_server()
@@ -103,6 +120,9 @@ class Wrapper(threading.Thread):
             self.TextProcessor.process_line(out)
 
     def reload(self):
+        """
+        Reloads all plugins
+        """
         self.CommandRegistry.clear_commands()
         self.EventManager.clear_handlers()
         self.plugin_manager.reload_all_manifests()
