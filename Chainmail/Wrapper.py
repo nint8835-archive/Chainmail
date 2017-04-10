@@ -37,6 +37,8 @@ class Wrapper(threading.Thread):
         self.CommandRegistry = CommandRegistry()
         self.PlayerManager = PlayerManager(self)
 
+        self.wrapper_running = True
+
         self.server_data_path = os.path.abspath(os.path.join(__file__, os.pardir, os.pardir, "server"))
         if not os.path.isdir(self.server_data_path):
             self._logger.error("Server data path does not exist, creating now.")
@@ -75,7 +77,6 @@ class Wrapper(threading.Thread):
         self._logger.debug("Plugins loaded.")
 
         self._server_process = None  # type: subprocess.Popen
-        self.wrapper_running = False
         self.version = "UNKNOWN"
 
         self._logger.debug("Wrapper initialized.")
@@ -104,7 +105,6 @@ class Wrapper(threading.Thread):
         """
         Handles the running of the server
         """
-        self.wrapper_running = True
 
         self.start_server()
 
