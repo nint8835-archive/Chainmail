@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Optional
 
 from .Player import Player
 from . import Wrapper
@@ -23,7 +23,7 @@ class PlayerManager(object):
         """
         self._uuids[username] = uuid
 
-    def get_uuid(self, username: str) -> str:
+    def get_uuid(self, username: str) -> Optional[str]:
         """
         Gets the uuid belonging to a username
         :param username: The username to get the uuid for
@@ -33,7 +33,7 @@ class PlayerManager(object):
             return self._uuids[username]
         return None
 
-    def get_player(self, username: str) -> Player:
+    def get_player(self, username: str) -> Optional[Player]:
         """
         Gets a player from a username
         :param username: The player's username
