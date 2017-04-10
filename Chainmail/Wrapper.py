@@ -76,6 +76,10 @@ class Wrapper(threading.Thread):
         self.plugin_manager.load_plugins(self)
         self._logger.debug("Plugins loaded.")
 
+        self._logger.debug("Enabling plugins...")
+        self.plugin_manager.enable_all_plugins()
+        self._logger.debug("Enabled all plugins.")
+
         self._server_process = None  # type: subprocess.Popen
         self.version = "UNKNOWN"
 
