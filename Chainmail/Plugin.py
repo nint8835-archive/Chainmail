@@ -13,6 +13,7 @@ class ChainmailPlugin(JigsawPlugin):
         """
         super().__init__(manifest)
         self.wrapper = wrapper
+        self.enabled = False
         self._logger = None
 
     @property
@@ -24,3 +25,9 @@ class ChainmailPlugin(JigsawPlugin):
         if self._logger is None:
             self._logger = logging.getLogger(self.manifest.get("name"))
         return self._logger
+
+    def enable(self) -> None:
+        self.enabled = True
+
+    def disable(self) -> None:
+        self.enabled = False

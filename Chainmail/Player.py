@@ -35,3 +35,10 @@ class Player(object):
         Deops this player
         """
         self.wrapper.write_line(f"deop {self.username}")
+
+    def teleport_to(self, player: "Player"):
+        """
+        Teleports this player to another player
+        :param player: The player to teleport this player to
+        """
+        self.wrapper.write_line(f"tp {self.username} {player.username}")
