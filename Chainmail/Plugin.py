@@ -4,6 +4,7 @@ from typing import Optional
 import requests
 from jigsaw import JigsawPlugin
 
+from .Util import get_item_from_list
 from . import Wrapper
 
 
@@ -49,7 +50,7 @@ class ChainmailPlugin(JigsawPlugin):
             version_remote = manifest["version"].split(".")
             version_local = self.manifest["version"].split(".")
             for i in range(len(version_local)):
-                if int(version_local[i]) < int(self.get_item_from_list(version_remote, i, "0")):
+                if int(version_local[i]) < int(get_item_from_list(version_remote, i, "0")):
                     self.logger.info(f"An update is available. Current version is v{self.manifest['version']}, updated version is v{manifest['version']}.")
                     return True
             self.logger.info("No update required.")

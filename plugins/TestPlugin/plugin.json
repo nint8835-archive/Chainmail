@@ -2,5 +2,6 @@
   "name": "Test Plugin",
   "developer": "nint8835",
   "version": "1.5.0",
-  "main_class": "TestPlugin"
+  "main_class": "TestPlugin",
+  "remote_manifest": "https://raw.githubusercontent.com/Chainmail-Project/Chainmail/master/plugins/TestPlugin/plugin.json"
 }

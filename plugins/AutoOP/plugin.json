@@ -2,5 +2,6 @@
   "name": "Auto OP",
   "developer": "nint8835",
   "version": "1.1.1",
-  "main_class": "AutoOP"
+  "main_class": "AutoOP",
+  "remote_manifest": "https://raw.githubusercontent.com/Chainmail-Project/Chainmail/master/plugins/AutoOP/plugin.json"
 }
