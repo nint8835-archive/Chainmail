@@ -3,10 +3,10 @@ import json
 import logging
 import os
 import re
-from typing import Dict, Pattern, List, Match
+from typing import Dict, Pattern
 
-from .Events import *
 from . import Wrapper
+from .Events import *
 
 RegexMatches = List[Match[str]]
 
