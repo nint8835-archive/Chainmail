@@ -1,5 +1,4 @@
 import logging
-from typing import Optional
 
 import requests
 from jigsaw import JigsawPlugin
@@ -37,13 +36,13 @@ class ChainmailPlugin(JigsawPlugin):
         self.enabled = False
 
     @property
-    def new_version_available(self) -> Optional[bool]:
+    def new_version_available(self) -> bool:
         """
         Checks the remote manifest to see if a new version is available
         :return: Whether or not there is a new version available
         """
         if self.manifest.get("remote_manifest", "") == "":
-            return
+            return False
         self.logger.info("Checking for update...")
         try:
             manifest = requests.get(self.manifest.get("remote_manifest", "")).json()
@@ -57,3 +56,4 @@ class ChainmailPlugin(JigsawPlugin):
             return False
         except requests.HTTPError:
             self.logger.warning("Failed to check for update.")
+            return False
