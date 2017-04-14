@@ -3,3 +3,5 @@
 server/
 *.log
 plugins/ChainmailRCON/
+plugins/ChainmailEssentials/
+plugins/ChainmailEconomy/

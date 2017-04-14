@@ -23,7 +23,7 @@ class TextProcessor(object):
         self._logger = logging.getLogger("TextProcessor")
         self.server_log = logging.getLogger("MinecraftServer")
 
-        self._regex_path = os.path.join(__file__, os.pardir, "regex")
+        self._regex_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "regex")
 
         self.load_version("generic")
 
