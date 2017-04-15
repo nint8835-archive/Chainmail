@@ -1,3 +1,4 @@
+from Chainmail import Wrapper
 from Chainmail.Events import Events, PlayerConnectedEvent
 from Chainmail.MessageBuilder import MessageBuilder, Colours, TextHoverEvent
 from Chainmail.Plugin import ChainmailPlugin

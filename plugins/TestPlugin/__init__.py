@@ -1,3 +1,4 @@
+from Chainmail import Wrapper
 from Chainmail.Plugin import ChainmailPlugin
 
 
