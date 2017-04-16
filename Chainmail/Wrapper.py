@@ -118,6 +118,7 @@ class Wrapper(threading.Thread):
                 self._logger.info("Server no longer running.")
                 self.EventManager.dispatch_event(Events.SERVER_STOPPED, ServerStoppedEvent())
                 self.wrapper_running = False
+                self.plugin_manager.disable_all_plugins()
                 return
 
             out = self._server_process.stdout.readline().decode("utf-8")
