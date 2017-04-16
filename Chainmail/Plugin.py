@@ -1,10 +1,11 @@
 import logging
 
 import requests
+import requests.exceptions
 from jigsaw import JigsawPlugin
 
-from .Util import get_item_from_list
 from . import Wrapper
+from .Util import get_item_from_list
 
 
 class ChainmailPlugin(JigsawPlugin):
@@ -54,6 +55,6 @@ class ChainmailPlugin(JigsawPlugin):
                     return True
             self.logger.info("No update required.")
             return False
-        except requests.HTTPError:
+        except requests.exceptions.ConnectionError:
             self.logger.warning("Failed to check for update.")
             return False
