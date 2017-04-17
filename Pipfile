@@ -3,8 +3,8 @@ url = "https://pypi.python.org/simple"
 verify_ssl = true
 
 [packages]
-Jigsaw = "*"
 requests = "*"
+Jigsaw = "*"
 
 [requires]
 python_version = "3.6"

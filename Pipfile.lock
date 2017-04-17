@@ -1,9 +1,11 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "cb65967bdf3a7372749ce6144be4ee63f412aeeac624342fda3a2b58b1c43c15"
+            "sha256": "81a12367b76655370ca4fee9e2b16f4a103b7d98082631b7e6efd5c4064a26dd"
         },
-        "requires": {},
+        "requires": {
+            "python_version": "3.6"
+        },
         "sources": [
             {
                 "url": "https://pypi.python.org/simple",
@@ -11,6 +13,15 @@
             }
         ]
     },
-    "default": {},
+    "default": {
+        "Jigsaw": {
+            "hash": "sha256:4363ce0b9521c6fba721656da7877ae471a612e1aca73591b6037ed87720eb9e",
+            "version": "==3.0.0"
+        },
+        "requests": {
+            "hash": "sha256:1a720e8862a41aa22e339373b526f508ef0c8988baf48b84d3fc891a8e237efb",
+            "version": "==2.13.0"
+        }
+    },
     "develop": {}
 }
