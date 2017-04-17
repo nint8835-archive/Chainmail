@@ -5,3 +5,6 @@ verify_ssl = true
 [packages]
 Jigsaw = "*"
 requests = "*"
+
+[requires]
+python_version = "3.6"
