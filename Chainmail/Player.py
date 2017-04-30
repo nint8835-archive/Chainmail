@@ -42,3 +42,23 @@ class Player(object):
         :param player: The player to teleport this player to
         """
         self.wrapper.write_line(f"tp {self.username} {player.username}")
+
+    def kick(self, reason: str=""):
+        """
+        Kicks this player from the server
+        :param reason: The optional reason for this kick
+        """
+        if reason == "":
+            self.wrapper.write_line(f"kick {self.username}")
+        else:
+            self.wrapper.write_line(f"kick {self.username} {reason}")
+
+    def ban(self, reason: str=""):
+        """
+        Bans this player from the server
+        :param reason: The optional reason for this ban
+        """
+        if reason == "":
+            self.wrapper.write_line(f"ban {self.username}")
+        else:
+            self.wrapper.write_line(f"ban {self.username} {reason}")
