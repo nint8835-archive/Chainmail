@@ -5,3 +5,4 @@ server/
 plugins/ChainmailRCON/
 plugins/ChainmailEssentials/
 plugins/ChainmailEconomy/
+plugins/RemoteWhitelist/
