@@ -20,6 +20,7 @@ class TextProcessor(object):
         """
         self._wrapper = wrapper
         self.regexes = []  # type: List[Dict[str, Pattern[str]]]
+        self.loaded_files = []
         self._logger = logging.getLogger("TextProcessor")
         self.server_log = logging.getLogger("MinecraftServer")
 
@@ -46,15 +47,7 @@ class TextProcessor(object):
         directory = os.path.join(self._regex_path, version)
         if os.path.isdir(directory):
             for file in self.get_json_files(directory):
-                with open(file) as f:
-                    data = json.load(f)
-
-                    for item in data:
-                        self.regexes.append({
-                            "type": item["type"],
-                            "regex": re.compile(item["regex"])
-                        })
-                        self._logger.debug(f"Loaded new regex for {item['type']}")
+                self.process_file(file)
         else:
             self._logger.warning(f"Version {version} not found.")
             close = difflib.get_close_matches(version, os.listdir(self._regex_path))
@@ -65,6 +58,24 @@ class TextProcessor(object):
                 self._logger.error("No close variation found. Not attempting to load.")
                 return
         self._logger.debug("Regexes loaded.")
+
+    def process_file(self, path: str) -> None:
+        if path in self.loaded_files:
+            return
+        with open(path) as f:
+            data = json.load(f)
+
+            for item in data:
+                if "import" in item:
+                    self.process_file(os.path.join(self._regex_path, item["import"]))
+                else:
+                    self.regexes.append({
+                        "type": item["type"],
+                        "regex": re.compile(item["regex"])
+                    })
+
+                    self._logger.debug(f"Loaded new regex for {item['type']}")
+            self.loaded_files.append(path)
 
     def unspecified_handler(self, event_type: str, matches: RegexMatches):
         """
